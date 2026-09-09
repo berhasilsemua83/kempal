@@ -760,6 +760,7 @@ function Sidebar({
       {customServices.map((service) => (
         <div key={service.id} style={{ display: "flex", width: "100%", alignItems: "center" }}>
           <button
+            disabled={!licensed}
             className={view === `custom-${service.id}` ? "active" : ""}
             onClick={() => setView(`custom-${service.id}`)}
             style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
