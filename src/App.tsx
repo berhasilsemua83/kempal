@@ -32,7 +32,7 @@ const licenseExpiryLabel = (state: LicenseState | null) => state?.lifetime ? "Li
 const plans = [
   {
     name: "5 Days Trial",
-    originalPrice: "Rp50.000",
+    originalPrice: "Rp20.000",
     price: "Gratis", // Ubah jadi Rp0 atau Gratis
     description: "Try VGenMulti for 5 days completely free",
     buttonText: "Get Trial License",
@@ -40,16 +40,16 @@ const plans = [
   },
   {
     name: "1 Year",
-    originalPrice: "Rp149.000",
-    price: "Rp99.000",
+    originalPrice: "Rp125.000",
+    price: "Rp35.000",
     description: "VGenMulti access for 1 year",
     buttonText: "Buy License",
     url: "https://lynk.id/toko_anda/1-year" // Ganti dengan link produk 1 tahun
   },
   {
     name: "Lifetime",
-    originalPrice: "Rp249.000",
-    price: "Rp149.000",
+    originalPrice: "Rp280.000",
+    price: "Rp50.000",
     description: "VGenMulti access with no expiration",
     buttonText: "Buy License",
     url: "https://lynk.id/toko_anda/lifetime" // Ganti dengan link produk lifetime
