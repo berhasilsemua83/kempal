@@ -94,6 +94,13 @@ export default function App() {
   const [key, setKey] = useState("")
   const [accounts, setAccounts] = useState<Account[]>([])
   const [accountsLoaded, setAccountsLoaded] = useState(false)
+  // State untuk Custom Services
+  const [customServices, setCustomServices] = useState<CustomService[]>([])
+  const [servicesLoaded, setServicesLoaded] = useState(false)
+  const [addServiceOpen, setAddServiceOpen] = useState(false)
+  const [newServiceName, setNewServiceName] = useState("")
+  const [newServiceUrl, setNewServiceUrl] = useState("")
+  const [addServiceError, setAddServiceError] = useState("")
   const [profile, setProfile] = useState<{
     name: string
     avatar: string | null
