@@ -234,12 +234,15 @@ const createAccount = () => {
       return
     }
     
-    // MENENTUKAN LOGO BERDASARKAN URL YANG DIPILIH
+// MENENTUKAN LOGO BERDASARKAN URL YANG DIPILIH
     let determinedAvatarUrl = "/google-flow.png";
     if (newAccountUrl.includes("dola.com")) {
       determinedAvatarUrl = "/dola.png";
     } else if (newAccountUrl.includes("migoo.ai")) {
       determinedAvatarUrl = "/migoo.png";
+    } else if (customServices.some(s => s.url === newAccountUrl)) {
+      // Jika url-nya adalah custom web, gunakan custom.png
+      determinedAvatarUrl = "/custom.png"; 
     }
 
     const a: Account = {
