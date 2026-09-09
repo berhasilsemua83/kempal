@@ -134,11 +134,25 @@ const [view, setView] = useState<string>("accounts")
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const [dragTargetId, setDragTargetId] = useState<string | null>(null)
   const [dragPreviewIds, setDragPreviewIds] = useState<string[] | null>(null)
-  useEffect(() => { 
+useEffect(() => { 
     void (async () => { 
       try { 
-        setLicensed(true);
-        setLicenseChecking(false);
+        setLicenseChecking(true);
+        
+        // Panggil backend Rust untuk mengecek dan memvalidasi lisensi
+        try {
+          // Jika Anda belum menggunakan Keygen/API nyata, validasi ini akan gagal
+          // dan otomatis melempar ke blok "catch", membuat licensed = false
+          const state = await invoke<LicenseState>("validate_license");
+          setLicenseState(state);
+          setLicensed(true);
+        } catch (err) {
+          console.warn("Status Lisensi: Belum Aktif / Invalid", err);
+          setLicensed(false);
+        } finally {
+          setLicenseChecking(false);
+        }
+
         await invoke("expand_main_window"); 
         const w = getCurrentWindow(); 
         await w.show(); 
