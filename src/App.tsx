@@ -467,7 +467,7 @@ const visible = useMemo(() => {
   if (view === "flow" && active)
     return (
       <div className={`app ${fullView ? "full" : ""}`}>
-        {!fullView && <Sidebar view="flow" setView={setView} profile={profile} licenseState={licenseState} />}
+        {!fullView && <Sidebar view="flow" setView={setView} profile={profile} licenseState={licenseState} customServices={customServices} onAddService={() => setAddServiceOpen(true)} onDeleteService={deleteService} />}
         <main className="content flow-content">
           <FlowShell
             account={active}
@@ -495,7 +495,7 @@ const visible = useMemo(() => {
     )
   return (
     <div className="app">
-      <Sidebar view={view} setView={setView} profile={profile} licenseState={licenseState} />
+      <Sidebar view={view} setView={setView} profile={profile} licenseState={licenseState} customServices={customServices} onAddService={() => setAddServiceOpen(true)} onDeleteService={deleteService} />
       <main className="content">
         <header>
           <div>
