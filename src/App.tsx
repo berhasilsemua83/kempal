@@ -1100,6 +1100,7 @@ function AddAccountCard({ onAdd }: { onAdd: () => void }) {
 
 function Card({
   a,
+  customServices, // <--- TAMBAH INI
   menuOpen,
   onMenu,
   onOpen,
@@ -1112,6 +1113,7 @@ function Card({
   onPointerDown,
 }: {
   a: Account
+  customServices: import("./services/service-store").CustomService[] // <--- TAMBAH INI JUGA
   menuOpen: boolean
   onMenu: () => void
   onOpen: () => void
