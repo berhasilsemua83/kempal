@@ -644,6 +644,10 @@ const visible = useMemo(() => {
                 <option value="https://flow.google">Google Flow</option>
                 <option value="https://dola.com">Dola</option>
                 <option value="https://migoo.ai">Migoo</option>
+                {/* Looping untuk Custom Services */}
+                {customServices.map((service) => (
+                  <option key={service.id} value={service.url}>{service.name}</option>
+                ))}
               </select>
 
               {addAccountError && <p className="dialog-error">{addAccountError}</p>}
