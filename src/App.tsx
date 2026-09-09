@@ -7,6 +7,7 @@ import { relaunch } from "@tauri-apps/plugin-process"
 import { check, type Update } from "@tauri-apps/plugin-updater"
 import packageJson from "../package.json"
 import { loadAccounts, saveAccounts } from "./services/account-store"
+import { loadServices, saveServices, type CustomService } from "./services/service-store"
 
 type Account = {
   id: string
