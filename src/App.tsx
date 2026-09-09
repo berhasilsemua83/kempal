@@ -731,25 +731,27 @@ function Sidebar({
       </button>
       <div className="side-label">WORKSPACE</div>
       
-      <button className={view === "accounts" ? "active" : ""} onClick={() => setView("accounts")}>
+      <button disabled={!licensed} className={view === "accounts" ? "active" : ""} onClick={() => setView("accounts")}>
+        <SidebarIcon name="accounts" /> <span>Accounts</span>
+      </button>
+      <div className="side-label">WORKSPACE</div>
+      
+      <button disabled={!licensed} className={view === "accounts" ? "active" : ""} onClick={() => setView("accounts")}>
         <SidebarIcon name="accounts" /> <span>All Accounts</span>
       </button>
       
-      <button className={view === "flow-accounts" ? "active" : ""} onClick={() => setView("flow-accounts")}>
+      <button disabled={!licensed} className={view === "flow-accounts" ? "active" : ""} onClick={() => setView("flow-accounts")}>
         <SidebarIcon name="accounts" /> <span>Flow</span>
       </button>
 
-      <button className={view === "dola-accounts" ? "active" : ""} onClick={() => setView("dola-accounts")}>
+      <button disabled={!licensed} className={view === "dola-accounts" ? "active" : ""} onClick={() => setView("dola-accounts")}>
         <SidebarIcon name="accounts" /> <span>Dola</span>
       </button>
 
-      <button className={view === "migoo-accounts" ? "active" : ""} onClick={() => setView("migoo-accounts")}>
+      <button disabled={!licensed} className={view === "migoo-accounts" ? "active" : ""} onClick={() => setView("migoo-accounts")}>
         <SidebarIcon name="accounts" /> <span>Migoo.ai</span>
       </button>
-      <button
-        className={view === "favorites" ? "active" : ""}
-        onClick={() => setView("favorites")}
-      >
+      <button disabled={!licensed} className={view === "favorites" ? "active" : ""} onClick={() => setView("favorites")}>
         <SidebarIcon name="favorites" /> <span>Favorites</span>
       </button>
       {/* CUSTOM SERVICES SECTION */}
