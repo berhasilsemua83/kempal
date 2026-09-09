@@ -664,6 +664,49 @@ const visible = useMemo(() => {
           </div>
         )}
       {/* BAGIAN PERBAIKAN 2: Penutup Main dan Div yang hilang */}
+        {addServiceOpen && (
+          <div className="overlay">
+            <div className="dialog" role="dialog" aria-modal="true">
+              <h2>Add Custom Web</h2>
+              <p>Masukkan nama dan URL website baru.</p>
+              
+              <input
+                autoFocus
+                value={newServiceName}
+                onChange={(event) => {
+                  setNewServiceName(event.target.value)
+                  setAddServiceError("")
+                }}
+                placeholder="Nama Web (misal: ChatGPT)"
+                maxLength={40}
+              />
+
+              <input
+                value={newServiceUrl}
+                onChange={(event) => {
+                  setNewServiceUrl(event.target.value)
+                  setAddServiceError("")
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") createService()
+                }}
+                placeholder="URL (misal: chatgpt.com)"
+                style={{ marginTop: "10px", width: "100%", height: "46px", borderRadius: "10px", background: "#131619", color: "#e8e9e9", border: "1px solid #363a3d", padding: "0 14px" }}
+              />
+
+              {addServiceError && <p className="dialog-error">{addServiceError}</p>}
+              
+              <div className="dialog-actions">
+                <button className="secondary" onClick={() => setAddServiceOpen(false)}>
+                  Cancel
+                </button>
+                <button className="primary" onClick={createService}>
+                  Add Web
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   )
