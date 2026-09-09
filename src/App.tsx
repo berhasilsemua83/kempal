@@ -827,7 +827,7 @@ function Sidebar({
           {profile.avatar ? (
             <img src={profile.avatar} alt="VGenMulti profile" />
           ) : (
-            "VM" 
+            "VG" 
           )}
         </div>
         <div>
