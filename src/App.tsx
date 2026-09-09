@@ -290,7 +290,7 @@ const createAccount = () => {
     }
   }, [active, accounts, view, fullView, navigatorOpen])
   const favoriteCount = accounts.filter((a) => a.favorite).length
-  const visible = useMemo(() => {
+const visible = useMemo(() => {
     return accounts.filter((a) => {
       const matchesSearch = `${a.name} ${a.email}`.toLowerCase().includes(query.toLowerCase());
       if (!matchesSearch) return false;
@@ -298,9 +298,20 @@ const createAccount = () => {
       if (view === "flow-accounts") return !a.url || a.url.includes("flow.google");
       if (view === "dola-accounts") return a.url && a.url.includes("dola");
       if (view === "migoo-accounts") return a.url && a.url.includes("migoo");
+      
+      // Filter untuk Custom Web
+      if (view.startsWith("custom-")) {
+        const customId = view.replace("custom-", "");
+        const targetService = customServices.find(s => s.id === customId);
+        if (targetService) {
+          return a.url === targetService.url;
+        }
+        return false;
+      }
+      
       return true;
     });
-  }, [accounts, query, view]);
+  }, [accounts, query, view, customServices]);
   const displayed = useMemo(() => {
     if (!dragPreviewIds || view !== "accounts") return visible
     const byId = new Map(accounts.map((account) => [account.id, account]))
