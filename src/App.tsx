@@ -115,18 +115,7 @@ export default function App() {
     }
   })
   const [query, setQuery] = useState("")
-  const [view, setView] = useState<
-    | "accounts"
-    | "flow-accounts"
-    | "dola-accounts"
-    | "migoo-accounts"
-    | "favorites"
-    | "license"
-    | "updates"
-    | "info"
-    | "settings"
-    | "flow"
-  >("accounts")
+const [view, setView] = useState<string>("accounts")
   const [active, setActive] = useState<Account | null>(null)
   const [fullView, setFullView] = useState(false)
   const [navigatorOpen, setNavigatorOpen] = useState(false)
