@@ -427,46 +427,12 @@ const visible = useMemo(() => {
   }
   const openLicensePurchase = (url?: string) =>
     invoke("open_external_url", { url: url || LICENSE_PURCHASE_URL })
-  if (licenseChecking && !licensed)
-    return <div className="gate"><div className="gate-card"><Brand /><h1>Checking your license</h1><p>Connecting securely to VGenMulti License Server…</p></div></div>
-  if (!licensed)
-    return (
-      <div className="gate">
-        <div className="gate-card">
-          <Brand />
-          <h1>Enter your license</h1>
-          <p>Activate VGenMulti with your license key.</p>
-          <input
-            autoFocus
-            value={key}
-            onChange={(e) => setKey(e.target.value)}
-            placeholder="Enter your license key"
-            onKeyDown={(e) => e.key === "Enter" && activateLicense()}
-          />
-          <button className="primary wide" onClick={activateLicense}>
-            {licenseChecking ? "Activating…" : "Activate VGenMulti →"}
-          </button>
-          {licenseError && <p className="dialog-error">{licenseError}</p>}
-          <div className="link">
-            Don’t have a license?{" "}
-            <a
-              href={LICENSE_PURCHASE_URL}
-              onClick={(e) => {
-                e.preventDefault()
-                void openLicensePurchase()
-              }}
-            >
-              <u>Buy a license →</u>
-            </a>
-          </div>
-          <small>
-            🔒 Your Google account login is handled directly in Google Flow.
-            <br />
-            We never store your login details.
-          </small>
-        </div>
-      </div>
-    )
+// Paksa pindah ke halaman License jika belum ada lisensi (kecuali sedang buka Info)
+  useEffect(() => {
+    if (!licenseChecking && !licensed && view !== "info" && view !== "license") {
+      setView("license")
+    }
+  }, [licensed, licenseChecking, view])
   if (view === "flow" && active)
     return (
       <div className={`app ${fullView ? "full" : ""}`}>
