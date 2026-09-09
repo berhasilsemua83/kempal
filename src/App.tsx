@@ -831,9 +831,69 @@ function SidebarIcon({ name }: { name: "accounts" | "favorites" | "license" | "u
   }
   return <svg className="sidebar-icon" {...common}>{paths[name]}</svg>
 }
-function LicensePage({ licenseState, onBuy }: { licenseState: LicenseState | null; onBuy: (url: string) => void }) {
+function LicensePage({ 
+  licenseState, 
+  onBuy,
+  licensed,
+  licenseKey,
+  setLicenseKey,
+  onActivate,
+  licenseChecking,
+  licenseError
+}: { 
+  licenseState: LicenseState | null; 
+  onBuy: (url?: string) => void;
+  licensed: boolean;
+  licenseKey: string;
+  setLicenseKey: (k: string) => void;
+  onActivate: () => void;
+  licenseChecking: boolean;
+  licenseError: string;
+}) {
   return (
     <div className="feature-page">
+      {!licensed && (
+        <section className="info-card" style={{ marginBottom: "20px" }}>
+          <div className="eyebrow">ACTIVATION</div>
+          <h2>Enter your license</h2>
+          <p>Activate VGenMulti to unlock all workspaces and features.</p>
+          <input
+            autoFocus
+            value={licenseKey}
+            onChange={(e) => setLicenseKey(e.target.value)}
+            placeholder="Enter your license key"
+            onKeyDown={(e) => e.key === "Enter" && onActivate()}
+            disabled={licenseChecking}
+            style={{ width: "100%", height: "46px", borderRadius: "10px", background: "#131619", color: "#e8e9e9", border: "1px solid #363a3d", padding: "0 14px", marginTop: "10px", marginBottom: "10px" }}
+          />
+          <button className="primary wide" onClick={onActivate} disabled={licenseChecking}>
+            {licenseChecking ? "Activating…" : "Activate VGenMulti →"}
+          </button>
+          {licenseError && <p className="dialog-error" style={{marginTop: "10px"}}>{licenseError}</p>}
+        </section>
+      )}
+
+      {licensed && (
+        <section className="license-info">
+          <div className="eyebrow">CURRENT LICENSE</div>
+          <h2>Current License</h2>
+          <div className="license-stats">
+            <span>
+              <b>Plan</b>
+              {licenseState ? licensePlanLabel(licenseState.plan) : "—"}
+            </span>
+            <span>
+              <b>Status</b>
+              {licenseState ? licenseStatusLabel(licenseState.status) : "Unavailable"}
+            </span>
+            <span>
+              <b>Expires</b>
+              {licenseExpiryLabel(licenseState)}
+            </span>
+          </div>
+        </section>
+      )}
+
       <div className="plan-grid">
         {plans.map((plan) => (
           <section className="plan-card" key={plan.name}>
@@ -841,31 +901,12 @@ function LicensePage({ licenseState, onBuy }: { licenseState: LicenseState | nul
             <s>{plan.originalPrice}</s>
             <strong>{plan.price}</strong>
             <p>{plan.description}.</p>
-            {/* Tombol akan membaca teks dan url dari daftar plans di atas */}
             <button className="primary" onClick={() => onBuy(plan.url)}>
               {plan.buttonText}
             </button>
           </section>
         ))}
       </div>
-      <section className="license-info">
-        <div className="eyebrow">CURRENT LICENSE</div>
-        <h2>Current License</h2>
-        <div className="license-stats">
-          <span>
-            <b>Plan</b>
-            {licenseState ? licensePlanLabel(licenseState.plan) : "—"}
-          </span>
-          <span>
-            <b>Status</b>
-            {licenseState ? licenseStatusLabel(licenseState.status) : "Unavailable"}
-          </span>
-          <span>
-            <b>Expires</b>
-            {licenseExpiryLabel(licenseState)}
-          </span>
-        </div>
-      </section>
     </div>
   )
 }
