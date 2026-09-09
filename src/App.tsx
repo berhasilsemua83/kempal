@@ -777,7 +777,7 @@ function Sidebar({
         </div>
       ))}
 
-      <button onClick={onAddService} style={{ color: "#8a8e91", marginTop: "4px" }}>
+      <button disabled={!licensed} onClick={onAddService} style={{ color: "#8a8e91", marginTop: "4px" }}>
         <span>＋ Add Custom Web</span>
       </button>
       <div className="rule" />
