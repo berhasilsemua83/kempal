@@ -738,6 +738,7 @@ function Sidebar({
       <Brand />
       <div className="side-label">WORKSPACE</div>
       <button
+        disabled={!licensed}   // <--- PASTIKAN ADA KODE INI
         className={view === "accounts" ? "active" : ""}
         onClick={() => setView("accounts")}
       >
