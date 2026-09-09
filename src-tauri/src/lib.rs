@@ -2,6 +2,7 @@ use std::time::Duration;
 use tauri::Manager;
 
 mod account_store;
+mod service_store;
 mod license_store;
 mod webview_manager;
 
