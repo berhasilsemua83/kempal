@@ -133,7 +133,9 @@ pub fn run() {
             license_store::validate_license,
             license_store::clear_license_state,
             account_store::load_accounts,
-            account_store::save_accounts
+            account_store::save_accounts,
+            service_store::load_services, // <--- Tambahkan baris ini
+            service_store::save_services  // <--- Tambahkan baris ini
         ])
         .run(tauri::generate_context!())
         .expect("error while running VGenMulti");
