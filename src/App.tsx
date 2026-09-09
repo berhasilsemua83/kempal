@@ -464,7 +464,7 @@ const visible = useMemo(() => {
     )
   return (
     <div className="app">
-      <Sidebar view={view} setView={setView} profile={profile} licenseState={licenseState} customServices={customServices} onAddService={() => setAddServiceOpen(true)} onDeleteService={deleteService} />
+      <Sidebar view={view} setView={setView} profile={profile} licenseState={licenseState} customServices={customServices} onAddService={() => setAddServiceOpen(true)} onDeleteService={deleteService} licensed={licensed} />
       <main className="content">
         <header>
           <div>
