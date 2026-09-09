@@ -683,11 +683,17 @@ function Sidebar({
   setView,
   profile,
   licenseState,
+  customServices,
+  onAddService,
+  onDeleteService,
 }: {
   view: string
   setView: (v: any) => void
   profile: { name: string; avatar: string | null }
   licenseState: LicenseState | null
+  customServices: import("./services/service-store").CustomService[]
+  onAddService: () => void
+  onDeleteService: (id: string, name: string) => void
 }) {
   return (
     <aside>
