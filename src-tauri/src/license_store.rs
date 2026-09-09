@@ -2,9 +2,9 @@ use keyring::Entry;
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf};
 use tauri::{path::BaseDirectory, AppHandle, Manager, Runtime};
-use uuid::Uuid;
 
-const API: &str = "";
+// Ini adalah alamat API resmi Keygen Anda
+const API: &str = "https://api.keygen.sh/v1/accounts/e117caf4-882d-4eba-a5a2-46e4303018a2";
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct LicenseState {
@@ -15,21 +15,13 @@ pub struct LicenseState {
     pub last_validated_at: String,
     pub device_id: String,
 }
-#[derive(Deserialize)]
-struct ServerResponse {
-    status: String,
-    plan: String,
-    #[serde(rename = "expiresAt")]
-    expires_at: Option<String>,
-    lifetime: bool,
-    #[serde(default)]
-    error: Option<String>,
-}
+
 fn path<R: Runtime>(a: &AppHandle<R>) -> Result<PathBuf, String> {
     a.path()
         .resolve("license-state.json", BaseDirectory::AppLocalData)
         .map_err(|e| e.to_string())
 }
+
 fn read<R: Runtime>(a: &AppHandle<R>) -> Result<Option<LicenseState>, String> {
     let p = path(a)?;
     if !p.exists() {
@@ -39,6 +31,7 @@ fn read<R: Runtime>(a: &AppHandle<R>) -> Result<Option<LicenseState>, String> {
         .map(Some)
         .map_err(|e| e.to_string())
 }
+
 fn write<R: Runtime>(a: &AppHandle<R>, s: &LicenseState) -> Result<(), String> {
     let p = path(a)?;
     if let Some(d) = p.parent() {
@@ -46,23 +39,19 @@ fn write<R: Runtime>(a: &AppHandle<R>, s: &LicenseState) -> Result<(), String> {
     };
     fs::write(p, serde_json::to_vec(s).map_err(|e| e.to_string())?).map_err(|e| e.to_string())
 }
+
 fn entry() -> Result<Entry, String> {
     Entry::new("VGenMulti", "license-key").map_err(|e| e.to_string())
 }
+
+// Mengambil Hardware ID Permanen (Anti-Reinstall / Anti Curang)
 fn device<R: Runtime>(a: &AppHandle<R>) -> Result<String, String> {
-    // 1. Cek apakah ID sudah pernah tersimpan di file
     if let Some(s) = read(a)? {
         if !s.device_id.is_empty() {
             return Ok(s.device_id);
         }
     };
-    
-    // 2. JIKA BELUM ADA, BACA HARDWARE ID (HWID) KOMPUTER!
-    // machine_uid::get() akan mengambil ID permanen dari Motherboard/OS.
-    // (Jika karena suatu hal komputer menolak akses, kita pakai ID acak sebagai cadangan)
     let id = machine_uid::get().unwrap_or_else(|_| uuid::Uuid::new_v4().to_string());
-    
-    // 3. Simpan ID tersebut ke file agar tidak perlu baca HWID terus-menerus
     write(
         a,
         &LicenseState {
@@ -70,59 +59,51 @@ fn device<R: Runtime>(a: &AppHandle<R>) -> Result<String, String> {
             ..Default::default()
         },
     )?;
-    
     Ok(id)
 }
+
 #[tauri::command]
 pub fn get_device_id<R: Runtime>(a: AppHandle<R>) -> Result<String, String> {
     device(&a)
 }
+
 #[tauri::command]
 pub fn get_license_state<R: Runtime>(a: AppHandle<R>) -> Result<Option<LicenseState>, String> {
     read(&a)
 }
-async fn call<R: Runtime>(
+
+// Fungsi Internal untuk Cek Kunci ke Keygen API
+async fn call_validate<R: Runtime>(
     a: &AppHandle<R>,
-    endpoint: &str,
     key: &str,
-) -> Result<ServerResponse, String> {
-    let body = serde_json::json!({"licenseKey":key,"deviceId":device(a)?});
-    let r = reqwest::Client::new()
-        .post(format!("{API}{endpoint}"))
+) -> Result<serde_json::Value, String> {
+    let hwid = device(a)?;
+    let client = reqwest::Client::new();
+    
+    let body = serde_json::json!({
+        "meta": {
+            "key": key,
+            "scope": { "fingerprint": hwid }
+        }
+    });
+
+    let res = client
+        .post(format!("{}/licenses/actions/validate-key", API))
+        .header("Content-Type", "application/vnd.api+json")
+        .header("Accept", "application/vnd.api+json")
         .json(&body)
         .send()
         .await
-        .map_err(|_| "Server Unavailable".to_string())?;
-    let code = r.status();
-    let d: ServerResponse = r
+        .map_err(|_| "Gagal terhubung ke Server Lisensi (Cek koneksi internet)".to_string())?;
+
+    let json: serde_json::Value = res
         .json()
         .await
-        .map_err(|_| "Server Unavailable".to_string())?;
-    if !code.is_success() {
-        return Err(match d.error.as_deref() {
-            Some("LICENSE_REVOKED") => "License Revoked",
-            Some("LICENSE_EXPIRED") => "License Expired",
-            Some("DEVICE_ALREADY_BOUND") => "Device Mismatch",
-            Some("INVALID_LICENSE") => "Invalid License",
-            _ if code.as_u16() >= 500 => "Server Unavailable",
-            _ => "Unexpected Server Response",
-        }
-        .to_string());
-    }
-    Ok(d)
+        .map_err(|_| "Respon server tidak valid".to_string())?;
+        
+    Ok(json)
 }
-fn state<R: Runtime>(a: &AppHandle<R>, d: ServerResponse) -> Result<LicenseState, String> {
-    let s = LicenseState {
-        plan: d.plan,
-        status: d.status,
-        expires_at: d.expires_at,
-        lifetime: d.lifetime,
-        last_validated_at: chrono::Utc::now().to_rfc3339(),
-        device_id: device(a)?,
-    };
-    write(a, &s)?;
-    Ok(s)
-}
+
 #[tauri::command]
 pub async fn activate_license<R: Runtime>(
     a: AppHandle<R>,
@@ -130,19 +111,118 @@ pub async fn activate_license<R: Runtime>(
 ) -> Result<LicenseState, String> {
     let key = license_key.trim();
     if key.is_empty() {
-        return Err("Invalid License".into());
+        return Err("Lisensi kosong atau tidak valid".into());
     };
-    let d = call(&a, "/license/activate", key).await?;
+
+    // 1. Cek lisensinya dulu ke Keygen
+    let mut json = call_validate(&a, key).await?;
+    let mut code = json["meta"]["code"].as_str().unwrap_or("");
+
+    // 2. Jika valid tapi belum diaktifkan di PC ini, daftarkan PC ini!
+    if code == "NO_MACHINE" || code == "NO_MACHINES" {
+        let hwid = device(&a)?;
+        let client = reqwest::Client::new();
+        let body = serde_json::json!({
+            "data": {
+                "type": "machines",
+                "attributes": {
+                    "fingerprint": hwid
+                }
+            }
+        });
+
+        let res = client
+            .post(format!("{}/machines", API))
+            .header("Authorization", format!("License {}", key)) // Otorisasi pakai kunci lisensinya
+            .header("Content-Type", "application/vnd.api+json")
+            .header("Accept", "application/vnd.api+json")
+            .json(&body)
+            .send()
+            .await
+            .map_err(|_| "Gagal mendaftarkan komputer ke Server".to_string())?;
+
+        if !res.status().is_success() {
+            let err_json: serde_json::Value = res.json().await.unwrap_or_default();
+            let err_detail = err_json["errors"][0]["detail"]
+                .as_str()
+                .unwrap_or("Gagal mengaktifkan lisensi di perangkat ini. Mungkin batas lisensi sudah penuh.");
+            return Err(err_detail.to_string());
+        }
+
+        // Cek ulang untuk memastikan statusnya sekarang menjadi VALID
+        json = call_validate(&a, key).await?;
+        code = json["meta"]["code"].as_str().unwrap_or("");
+    }
+
+    // 3. Baca hasil akhirnya
+    let valid = json["meta"]["valid"].as_bool().unwrap_or(false);
+    
+    if !valid {
+        let err_msg = match code {
+            "FINGERPRINT_SCOPE_MISMATCH" => "Lisensi ini sudah terpakai di komputer lain.",
+            "EXPIRED" => "Lisensi sudah kedaluwarsa.",
+            "SUSPENDED" => "Lisensi Anda dibekukan sementara.",
+            _ => "Lisensi tidak valid atau tidak ditemukan."
+        };
+        return Err(err_msg.to_string());
+    }
+
+    // 4. Jika valid, simpan ke komputer
+    let expiry = json["data"]["attributes"]["expiry"].as_str().map(|s| s.to_string());
+    let status = json["data"]["attributes"]["status"].as_str().unwrap_or("ACTIVE").to_string();
+
+    let state = LicenseState {
+        plan: "Premium Access".to_string(), // Otomatis Premium
+        status,
+        expires_at: expiry.clone(),
+        lifetime: expiry.is_none(),
+        last_validated_at: chrono::Utc::now().to_rfc3339(),
+        device_id: device(&a)?,
+    };
+
     entry()?.set_password(key).map_err(|e| e.to_string())?;
-    state(&a, d)
+    write(&a, &state)?;
+    
+    Ok(state)
 }
+
 #[tauri::command]
 pub async fn validate_license<R: Runtime>(a: AppHandle<R>) -> Result<LicenseState, String> {
     let key = entry()?
         .get_password()
-        .map_err(|_| "Invalid License".to_string())?;
-    state(&a, call(&a, "/license/validate", &key).await?)
+        .map_err(|_| "Tidak ada lisensi tersimpan".to_string())?;
+        
+    let json = call_validate(&a, &key).await?;
+    let valid = json["meta"]["valid"].as_bool().unwrap_or(false);
+    
+    if !valid {
+        let code = json["meta"]["code"].as_str().unwrap_or("");
+        let err_msg = match code {
+            "FINGERPRINT_SCOPE_MISMATCH" => "Lisensi terpakai di PC lain.",
+            "EXPIRED" => "Lisensi kedaluwarsa.",
+            _ => "Lisensi tidak valid."
+        };
+        // Hapus file lisensi lokal karena sudah tidak valid
+        let _ = clear_license_state(a.clone());
+        return Err(err_msg.to_string());
+    }
+
+    let expiry = json["data"]["attributes"]["expiry"].as_str().map(|s| s.to_string());
+    let status = json["data"]["attributes"]["status"].as_str().unwrap_or("ACTIVE").to_string();
+
+    let state = LicenseState {
+        plan: "Premium Access".to_string(),
+        status,
+        expires_at: expiry.clone(),
+        lifetime: expiry.is_none(),
+        last_validated_at: chrono::Utc::now().to_rfc3339(),
+        device_id: device(&a)?,
+    };
+    
+    write(&a, &state)?;
+    Ok(state)
 }
+
 #[tauri::command]
 pub fn clear_license_state<R: Runtime>(a: AppHandle<R>) -> Result<(), String> {
     let _ = entry()?.delete_credential();
