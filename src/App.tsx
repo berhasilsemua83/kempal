@@ -436,11 +436,7 @@ const visible = useMemo(() => {
   if (view === "flow" && active)
     return (
       <div className={`app ${fullView ? "full" : ""}`}>
-        {/* Yang pertama (saat buka webview) */}
   {!fullView && <Sidebar view="flow" setView={setView} profile={profile} licenseState={licenseState} customServices={customServices} onAddService={() => setAddServiceOpen(true)} onDeleteService={deleteService} licensed={licensed} />}
-  
-  {/* Yang kedua (layar utama) */}
-  <Sidebar view={view} setView={setView} profile={profile} licenseState={licenseState} customServices={customServices} onAddService={() => setAddServiceOpen(true)} onDeleteService={deleteService} licensed={licensed} />
         <main className="content flow-content">
           <FlowShell
             account={active}
