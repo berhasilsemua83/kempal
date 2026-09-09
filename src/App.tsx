@@ -529,7 +529,16 @@ const visible = useMemo(() => {
         {view === "settings" ? (
           <Settings profile={profile} onAvatarChange={updateProfileAvatar} />
         ) : view === "license" ? (
-          <LicensePage licenseState={licenseState} onBuy={(url) => openLicensePurchase(url)} />
+          <LicensePage 
+            licenseState={licenseState} 
+            onBuy={(url) => openLicensePurchase(url)} 
+            licensed={licensed}
+            licenseKey={key}
+            setLicenseKey={setKey}
+            onActivate={activateLicense}
+            licenseChecking={licenseChecking}
+            licenseError={licenseError}
+          />
         ) : view === "updates" ? (
           <UpdatesPage />
         ) : view === "info" ? (
