@@ -50,12 +50,19 @@ fn entry() -> Result<Entry, String> {
     Entry::new("VGenMulti", "license-key").map_err(|e| e.to_string())
 }
 fn device<R: Runtime>(a: &AppHandle<R>) -> Result<String, String> {
+    // 1. Cek apakah ID sudah pernah tersimpan di file
     if let Some(s) = read(a)? {
         if !s.device_id.is_empty() {
             return Ok(s.device_id);
         }
     };
-    let id = Uuid::new_v4().to_string();
+    
+    // 2. JIKA BELUM ADA, BACA HARDWARE ID (HWID) KOMPUTER!
+    // machine_uid::get() akan mengambil ID permanen dari Motherboard/OS.
+    // (Jika karena suatu hal komputer menolak akses, kita pakai ID acak sebagai cadangan)
+    let id = machine_uid::get().unwrap_or_else(|_| uuid::Uuid::new_v4().to_string());
+    
+    // 3. Simpan ID tersebut ke file agar tidak perlu baca HWID terus-menerus
     write(
         a,
         &LicenseState {
@@ -63,6 +70,7 @@ fn device<R: Runtime>(a: &AppHandle<R>) -> Result<String, String> {
             ..Default::default()
         },
     )?;
+    
     Ok(id)
 }
 #[tauri::command]
