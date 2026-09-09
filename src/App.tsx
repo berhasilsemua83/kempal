@@ -249,6 +249,16 @@ const createAccount = () => {
   useEffect(() => {
     if (licensed && accountsLoaded) void saveAccounts(accounts)
   }, [accounts, licensed, accountsLoaded])
+  // Efek untuk memuat Custom Services pertama kali aplikasi dibuka
+  useEffect(() => {
+    if (!licensed || servicesLoaded) return
+    void loadServices().then((saved) => setCustomServices(saved)).finally(() => setServicesLoaded(true))
+  }, [licensed, servicesLoaded])
+
+  // Efek untuk otomatis menyimpan jika ada perubahan di customServices
+  useEffect(() => {
+    if (licensed && servicesLoaded) void saveServices(customServices)
+  }, [customServices, licensed, servicesLoaded])
   useEffect(() => {
     const activeStillExists = active !== null && accounts.some((account) => account.id === active.id)
     if (view === "flow" && !activeStillExists) {
