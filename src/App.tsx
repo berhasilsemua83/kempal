@@ -818,10 +818,22 @@ function Sidebar({
         <div 
           className="avatar" 
           style={{ 
-            background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", 
-            color: "white", 
+            // Jika licensed aktif, pakai gradasi menyala. Jika tidak, pakai warna abu-abu gelap
+            background: licensed 
+              ? "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)" 
+              : "#2a2d30", 
+            
+            // Jika licensed aktif, teks putih. Jika tidak, teks abu-abu redup
+            color: licensed ? "white" : "#6c7074", 
+            
             border: "none",
-            boxShadow: "0 4px 10px rgba(168, 85, 247, 0.3)"
+            
+            // Jika licensed aktif, berikan efek cahaya (glow). Jika tidak, hilangkan cahayanya
+            boxShadow: licensed 
+              ? "0 4px 12px rgba(168, 85, 247, 0.4)" 
+              : "none",
+              
+            transition: "all 0.5s ease" // Efek transisi halus saat berubah warna
           }}
         >
           {profile.avatar ? (
