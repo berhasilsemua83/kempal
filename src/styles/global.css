@@ -154,12 +154,23 @@ aside .side-label{padding:14px 14px 5px}.rule{height:1px;background:#1a1d21;marg
 /* --- STYLING UNTUK TOMBOL TIDAK AKTIF (DISABLED) --- */
 button:disabled,
 button[disabled] {
-  opacity: 0.4 !important; /* Membuat tombol terlihat redup / transparan */
-  cursor: not-allowed !important; /* Mengubah kursor menjadi tanda 'dilarang' */
-  pointer-events: none; /* Mencegah semua interaksi mouse (termasuk hover) */
+  opacity: 0.4 !important;
+  cursor: not-allowed !important;
+}
+
+/* Mematikan efek perubahan warna/animasi saat di-hover */
+button:disabled:hover,
+button[disabled]:hover {
+  filter: none !important;
+  transform: none !important;
 }
 
 aside button:disabled,
 aside button[disabled] {
-  opacity: 0.3 !important; /* Khusus di sidebar, kita buat sedikit lebih redup lagi */
+  opacity: 0.3 !important;
+}
+
+aside button:disabled:hover,
+aside button[disabled]:hover {
+  background: transparent !important; /* Mencegah munculnya kotak hover di sidebar */
 }
