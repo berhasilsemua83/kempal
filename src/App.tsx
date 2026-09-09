@@ -1161,7 +1161,16 @@ function Card({
       </div>
 <h2>{a.name}</h2>
       <button className="primary wide" onClick={onOpen}>
-        {a.url?.includes("dola") ? "Open Dola" : a.url?.includes("migoo") ? "Open Migoo" : "Open Google Flow"} <span>→</span>
+        {(() => {
+          if (a.url?.includes("dola")) return "Open Dola"
+          if (a.url?.includes("migoo")) return "Open Migoo"
+          
+          // Cek apakah URL akun sama dengan URL web custom
+          const custom = customServices.find(s => s.url === a.url)
+          if (custom) return `Open ${custom.name}`
+          
+          return "Open Google Flow"
+        })()} <span>→</span>
       </button>
       <div className="card-links">
         <button onClick={onRename}>✎ Rename</button>
