@@ -708,7 +708,9 @@ function Sidebar({
   customServices,
   onAddService,
   onDeleteService,
+  licensed, // <--- TAMBAHKAN INI
 }: {
+  licensed: boolean
   view: string
   setView: (v: any) => void
   profile: { name: string; avatar: string | null }
