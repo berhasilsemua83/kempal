@@ -572,6 +572,7 @@ const visible = useMemo(() => {
                 <Card
                   key={a.id}
                   a={a}
+                  customServices={customServices}
                   menuOpen={menu === a.id}
                   onMenu={() => setMenu(menu === a.id ? null : a.id)}
                   onOpen={() => {
