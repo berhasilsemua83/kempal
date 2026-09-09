@@ -1030,43 +1030,43 @@ function UpdatesPage() {
   )
 }
 function InfoPage() {
-  // State untuk menyimpan pilihan bahasa (default: English)
-  const [lang, setLang] = useState<"en" | "id">("en")
+  // 1. Ubah default dari "en" menjadi "id"
+  const [lang, setLang] = useState<"en" | "id">("id")
 
-  // Data konten dalam 2 bahasa
+  // 2. Tambahkan info tentang Custom Web di konten teksnya
   const content = {
     en: {
       steps: [
-        ["The Ultimate Account Pool", "Keep all your Google Flow, Dola, and Migoo accounts in one single workspace. Say goodbye to scattered and messy browser tabs."],
-        ["One-Click Switching", "Jump from one account to another instantly. Switch workspaces efficiently without the tedious process of logging in and out."],
-        ["Beat Generation Limits", "Hit your daily usage limit on one account? Just click on your backup account and continue your work without missing a beat."],
-        ["Effortless Control", "Easily organize, rename, and favorite your accounts. You have full visibility and control over your entire AI workflow."]
+        ["The Ultimate Account Pool", "Keep all your Google Flow, Dola, Migoo, and ANY custom AI websites in one single workspace."],
+        ["Add Custom Websites", "Not limited to default websites. You can add your own favorite AI tools or web apps by clicking '+ Add Custom Web'."],
+        ["One-Click Switching", "Jump from one account to another instantly without the tedious process of logging in and out."],
+        ["Beat Generation Limits", "Hit your daily usage limit on one account? Just click on your backup account and continue your work."]
       ],
       whyTitle: "Why choose VGenMulti over a browser?",
       whySubtitle: "Maximize your productivity and efficiency.",
       whyBadge: "WORK SMART",
       reasons: [
-        ["🚫 Zero Tab Clutter", "Stop getting lost in dozens of open tabs. VGenMulti keeps your workspace clean, focused, and organized in one dedicated app."],
-        ["⚡ Instant Transitions", "Time is money. Switching between accounts takes literally one click, saving you time from managing multiple browser profiles."],
-        ["🤖 All-in-One AI Hub", "Whether you are generating with Google Flow, Dola, or Migoo, everything runs side-by-side smoothly in a single interface."],
-        ["🛡️ Focused Resource", "Designed specifically to handle multiple AI accounts efficiently without eating up your computer's RAM like standard browsers do."]
+        ["🚫 Zero Tab Clutter", "Stop getting lost in dozens of open tabs. VGenMulti keeps your workspace clean in one dedicated app."],
+        ["⚡ Instant Transitions", "Time is money. Switching between accounts takes literally one click, saving you time."],
+        ["🤖 All-in-One Hub", "Run Flow, Dola, Migoo, or ANY custom web apps side-by-side smoothly in a single interface."],
+        ["🛡️ Focused Resource", "Designed specifically to handle multiple AI accounts efficiently without eating up your RAM."]
       ]
     },
     id: {
       steps: [
-        ["Pusat Akun Terpadu", "Kumpulkan semua akun Google Flow, Dola, dan Migoo di satu tempat. Ucapkan selamat tinggal pada tab browser yang berantakan."],
+        ["Pusat Akun Terpadu", "Kumpulkan semua akun Google Flow, Dola, Migoo, dan website AI CUSTOM apa pun di satu tempat."],
+        ["Bebas Tambah Website", "Tidak terbatas pada web bawaan. Anda bisa menambahkan web AI favorit Anda sendiri melalui menu '+ Add Custom Web' di Sidebar."],
         ["Pindah Akun 1 Klik", "Pindah antar akun secara instan. Bekerja lebih efisien tanpa repot login dan logout berulang kali."],
-        ["Atasi Limit Harian", "Limit harian di satu akun habis? Cukup klik akun cadanganmu dan lanjutkan pekerjaan tanpa hambatan."],
-        ["Kontrol Penuh", "Kelola, ganti nama, dan favoritkan akun dengan mudah. Kamu punya kontrol penuh atas seluruh alur kerjamu."]
+        ["Atasi Limit Harian", "Limit harian di satu akun habis? Cukup ganti ke akun cadanganmu dan lanjutkan pekerjaan tanpa hambatan."]
       ],
       whyTitle: "Mengapa memilih VGenMulti dibanding browser?",
       whySubtitle: "Maksimalkan produktivitas dan efisiensi Anda.",
       whyBadge: "KERJA CERDAS",
       reasons: [
-        ["🚫 Bebas Tab Menumpuk", "Berhenti pusing dengan puluhan tab yang terbuka. VGenMulti menjaga ruang kerjamu tetap bersih, fokus, dan rapi di satu aplikasi khusus."],
-        ["⚡ Transisi Instan", "Waktu adalah uang. Pindah antar akun hanya butuh satu klik, menghemat waktumu dari pada mengelola banyak profil browser."],
-        ["🤖 Hub AI All-in-One", "Entah kamu memakai Google Flow, Dola, atau Migoo, semuanya berjalan beriringan dengan lancar di satu tampilan antarmuka."],
-        ["🛡️ Hemat Resource RAM", "Dirancang khusus untuk mengelola banyak akun AI secara efisien tanpa memakan banyak RAM komputer seperti browser biasa."]
+        ["🚫 Bebas Tab Menumpuk", "Berhenti pusing dengan puluhan tab. VGenMulti menjaga ruang kerjamu tetap bersih di satu aplikasi khusus."],
+        ["⚡ Transisi Instan", "Waktu adalah uang. Pindah antar akun hanya butuh satu klik, jauh lebih cepat daripada browser biasa."],
+        ["🤖 Hub AI All-in-One", "Buka Flow, Dola, Migoo, atau Web Custom Anda sendiri secara beriringan dengan lancar di satu antarmuka."],
+        ["🛡️ Hemat Resource RAM", "Dirancang khusus untuk mengelola banyak akun AI secara efisien tanpa membuat komputer lemot."]
       ]
     }
   }
