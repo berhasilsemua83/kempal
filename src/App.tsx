@@ -815,11 +815,19 @@ function Sidebar({
 
       {/* Menu Settings dihapus */}
       <div className="side-bottom">
-        <div className="avatar">
+        <div 
+          className="avatar" 
+          style={{ 
+            background: "linear-gradient(135deg, #6366f1 0%, #a855f7 100%)", 
+            color: "white", 
+            border: "none",
+            boxShadow: "0 4px 10px rgba(168, 85, 247, 0.3)"
+          }}
+        >
           {profile.avatar ? (
             <img src={profile.avatar} alt="VGenMulti profile" />
           ) : (
-            "YK"
+            "VM" 
           )}
         </div>
         <div>
