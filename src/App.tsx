@@ -194,6 +194,35 @@ const [view, setView] = useState<string>("accounts")
     setAddAccountError("")
     setAddAccountOpen(true)
   }
+  const createService = () => {
+    const name = newServiceName.trim()
+    let url = newServiceUrl.trim()
+    
+    if (!name) { setAddServiceError("Please enter a web name."); return }
+    if (!url) { setAddServiceError("Please enter a URL."); return }
+    
+    // Otomatis tambahkan https:// jika user lupa mengetiknya
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      url = "https://" + url;
+    }
+
+    const newService: CustomService = {
+      id: crypto.randomUUID(),
+      name,
+      url,
+    }
+    setCustomServices([...customServices, newService])
+    setAddServiceOpen(false)
+    setNewServiceName("")
+    setNewServiceUrl("")
+  }
+
+  const deleteService = (id: string, name: string) => {
+    if (confirm(`Apakah Anda yakin ingin menghapus web custom "${name}"? Akun yang menggunakan web ini tidak akan terhapus, tapi menu ini akan hilang dari Sidebar.`)) {
+      setCustomServices(customServices.filter(s => s.id !== id))
+      if (view === `custom-${id}`) setView("accounts")
+    }
+  }
 const createAccount = () => {
     const name = newAccountName.trim()
     if (!name) {
