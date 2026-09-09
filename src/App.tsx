@@ -728,6 +728,31 @@ function Sidebar({
       >
         <SidebarIcon name="favorites" /> <span>Favorites</span>
       </button>
+      {/* CUSTOM SERVICES SECTION */}
+      {customServices.length > 0 && <div className="side-label">CUSTOM WEB</div>}
+      
+      {customServices.map((service) => (
+        <div key={service.id} style={{ display: "flex", width: "100%", alignItems: "center" }}>
+          <button
+            className={view === `custom-${service.id}` ? "active" : ""}
+            onClick={() => setView(`custom-${service.id}`)}
+            style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+          >
+            <SidebarIcon name="accounts" /> <span>{service.name}</span>
+          </button>
+          <button 
+            onClick={() => onDeleteService(service.id, service.name)}
+            style={{ background: "transparent", border: "none", color: "#666", width: "30px", padding: 0, cursor: "pointer", fontSize: "12px" }}
+            title="Hapus web ini"
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+
+      <button onClick={onAddService} style={{ color: "#8a8e91", marginTop: "4px" }}>
+        <span>＋ Add Custom Web</span>
+      </button>
       <div className="rule" />
 <div className="side-label">GENERAL</div>
       <button
