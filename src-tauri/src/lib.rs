@@ -35,6 +35,20 @@ async fn open_google_flow(
     width: f64,
     height: f64,
 ) -> Result<(), String> {
+    
+    // ==============================================================
+    // GEMBOK LAPIS KEDUA (HARD-CHECK DI MESIN RUST)
+    // Pastikan pengguna benar-benar memiliki lisensi yang sah 
+    // sebelum mesin Rust mengizinkan browser WebView terbuka!
+    // ==============================================================
+    let has_license = license_store::get_license_state(app.clone())
+        .unwrap_or(None)
+        .is_some();
+        
+    if !has_license {
+        return Err("Akses ditolak: Anda tidak memiliki lisensi yang valid. Silakan beli atau aktivasi lisensi Anda terlebih dahulu.".to_string());
+    }
+
     let operation_app = app.clone();
     run_on_ui_thread(&app, move || {
         webview_manager::open(&operation_app, account_id, url, x, y, width, height) 
