@@ -758,19 +758,6 @@ function Sidebar({
     <aside>
       <Brand />
       <div className="side-label">WORKSPACE</div>
-      <button
-        disabled={!licensed}   // <--- PASTIKAN ADA KODE INI
-        className={view === "accounts" ? "active" : ""}
-        onClick={() => setView("accounts")}
-      >
-        <SidebarIcon name="accounts" /> <span>Accounts</span>
-      </button>
-      <div className="side-label">WORKSPACE</div>
-      
-      <button disabled={!licensed} className={view === "accounts" ? "active" : ""} onClick={() => setView("accounts")}>
-        <SidebarIcon name="accounts" /> <span>Accounts</span>
-      </button>
-      <div className="side-label">WORKSPACE</div>
       
       <button disabled={!licensed} className={view === "accounts" ? "active" : ""} onClick={() => setView("accounts")}>
         <SidebarIcon name="accounts" /> <span>All Accounts</span>
