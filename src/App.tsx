@@ -433,11 +433,32 @@ const visible = useMemo(() => {
     setDragPoint({ x: event.clientX, y: event.clientY })
   }
   const activateLicense = async () => {
-    if (!key.trim() || !deviceId) { setLicenseError("Invalid License"); return }
-    setLicenseChecking(true); setLicenseError("")
-    try { const activated=await invoke<LicenseState>("activate_license", { licenseKey: key }); setLicenseState(activated); const w = getCurrentWindow(); setKey(""); setLicensed(true)
-      await invoke("expand_main_window"); await w.show(); await w.setFocus(); return
-    } catch { setLicenseError("Server Unavailable") } finally { setLicenseChecking(false) }
+    if (!key.trim()) { 
+      setLicenseError("Masukkan kunci lisensi terlebih dahulu"); 
+      return; 
+    }
+    
+    setLicenseChecking(true); 
+    setLicenseError("");
+    
+    try {
+      // Ini akan memanggil Rust yang sekarang terhubung ke Keygen
+      const activated = await invoke<LicenseState>("activate_license", { licenseKey: key });
+      
+      setLicenseState(activated); 
+      setLicensed(true);
+      setKey(""); // Bersihkan input
+      
+      const w = getCurrentWindow();
+      await invoke("expand_main_window"); 
+      await w.show(); 
+      await w.setFocus(); 
+    } catch (error) { 
+      // Akan menampilkan alasan DARI SERVER (misal: "Lisensi kedaluwarsa" dll)
+      setLicenseError(typeof error === "string" ? error : "Gagal terhubung ke Server");
+    } finally { 
+      setLicenseChecking(false); 
+    }
   }
   const openLicensePurchase = (url?: string) =>
     invoke("open_external_url", { url: url || LICENSE_PURCHASE_URL })
