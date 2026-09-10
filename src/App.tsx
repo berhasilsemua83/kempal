@@ -820,7 +820,12 @@ function Sidebar({
       >
         <SidebarIcon name="info" /> <span>Info</span>
       </button>
-
+{/* --- TAMBAHKAN TOMBOL WEBSITE & KOMUNITAS DI SINI --- */}
+      <button
+        onClick={() => invoke("open_external_url", { url: "https://akariu.my.id" })}
+      >
+        <SidebarIcon name="website" /> <span>Website & Support</span>
+      </button>
       {/* Menu Settings dihapus */}
       <div className="side-bottom">
         <div 
