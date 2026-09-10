@@ -822,7 +822,7 @@ function Sidebar({
       </button>
 {/* --- TAMBAHKAN TOMBOL WEBSITE & KOMUNITAS DI SINI --- */}
       <button
-        onClick={() => invoke("open_external_url", { url: "https://akariu.my.id" })}
+        onClick={() => invoke("open_external_url", { url: "https://akariu.blogspot.com" })}
       >
         <SidebarIcon name="website" /> <span>Website & Support</span>
       </button>
