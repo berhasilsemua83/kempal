@@ -121,12 +121,21 @@ pub async fn activate_license<R: Runtime>(
     // 2. Jika valid tapi belum diaktifkan di PC ini, daftarkan PC ini!
     if code == "NO_MACHINE" || code == "NO_MACHINES" {
         let hwid = device(&a)?;
+        
+        // AMBIL ID LISENSI DARI SERVER UNTUK DIIKAT KE KOMPUTER INI
+        let license_id = json["data"]["id"].as_str().unwrap_or(""); 
+
         let client = reqwest::Client::new();
         let body = serde_json::json!({
             "data": {
                 "type": "machines",
                 "attributes": {
                     "fingerprint": hwid
+                },
+                "relationships": {  // <--- INI BAGIAN YANG TADI "MISSING"
+                    "license": {
+                        "data": { "type": "licenses", "id": license_id }
+                    }
                 }
             }
         });
@@ -139,13 +148,13 @@ pub async fn activate_license<R: Runtime>(
             .json(&body)
             .send()
             .await
-            .map_err(|_| "Gagal mendaftarkan komputer ke Server".to_string())?;
+            .map_err(|e| format!("Gagal mendaftar PC: {}", e))?;
 
         if !res.status().is_success() {
             let err_json: serde_json::Value = res.json().await.unwrap_or_default();
             let err_detail = err_json["errors"][0]["detail"]
                 .as_str()
-                .unwrap_or("Gagal mengaktifkan lisensi di perangkat ini. Mungkin batas lisensi sudah penuh.");
+                .unwrap_or("Gagal mengaktifkan lisensi di perangkat ini.");
             return Err(err_detail.to_string());
         }
 
