@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "VGenMulti",
+  "productName": "AkariuMulti",
   "version": "1.5.0",
-  "identifier": "com.vgenmulti.desktop",
+  "identifier": "com.akariumulti.desktop",
   "build": { 
     "beforeDevCommand": "npm run dev", 
     "devUrl": "http://localhost:5173", 
@@ -12,7 +12,7 @@
   "app": { 
     "windows": [
       { 
-        "title": "VGenMulti", 
+        "title": "AkariuMulti", 
         "width": 540, 
         "height": 620, 
         "minWidth": 540, 
