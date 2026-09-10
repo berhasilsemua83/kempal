@@ -34,7 +34,7 @@ const plans = [
     name: "5 Days Trial",
     originalPrice: "Rp20.000",
     price: "Gratis", // Ubah jadi Rp0 atau Gratis
-    description: "Try VGenMulti for 5 days completely free",
+    description: "Try AkariuMulti for 5 days completely free",
     buttonText: "Get Trial License",
     url: "https://lynk.id/toko_anda/trial" // Ganti dengan link khusus produk trial
   },
@@ -42,7 +42,7 @@ const plans = [
     name: "1 Year",
     originalPrice: "Rp125.000",
     price: "Rp35.000",
-    description: "VGenMulti access for 1 year",
+    description: "AkariuMulti access for 1 year",
     buttonText: "Buy License",
     url: "https://lynk.id/toko_anda/1-year" // Ganti dengan link produk 1 tahun
   },
@@ -50,7 +50,7 @@ const plans = [
     name: "Lifetime",
     originalPrice: "Rp280.000",
     price: "Rp50.000",
-    description: "VGenMulti access with no expiration",
+    description: "AkariuMulti access with no expiration",
     buttonText: "Buy License",
     url: "https://lynk.id/toko_anda/lifetime" // Ganti dengan link produk lifetime
   },
@@ -107,11 +107,11 @@ export default function App() {
   }>(() => {
     try {
       return JSON.parse(
-        localStorage.getItem("vgenmulti-profile") ||
-          '{"name":"VGenMulti","avatar":null}'
+        localStorage.getItem("akariumulti-profile") ||
+          '{"name":"AkariuMulti","avatar":null}'
       )
     } catch {
-      return { name: "VGenMulti", avatar: null }
+      return { name: "AkariuMulti", avatar: null }
     }
   })
   const [query, setQuery] = useState("")
@@ -275,7 +275,7 @@ const createAccount = () => {
   const updateProfileAvatar = (avatar: string) => {
     const next = { ...profile, avatar }
     setProfile(next)
-    localStorage.setItem("vgenmulti-profile", JSON.stringify(next))
+    localStorage.setItem("akariumulti-profile", JSON.stringify(next))
   }
   useEffect(() => {
     if (!licensed || accountsLoaded) return
@@ -483,7 +483,7 @@ const visible = useMemo(() => {
         <header>
           <div>
             <div className="eyebrow">
-              VGENMULTI /{" "}
+              AKARIUMULTI /{" "}
               {view === "settings"
                 ? "SETTINGS"
                 : view === "favorites"
@@ -495,7 +495,7 @@ const visible = useMemo(() => {
                 : view === "favorites" ? "Favorite Accounts"
                 : view === "license" ? "License"
                 : view === "updates" ? "Updates"
-                : view === "info" ? "How to Use VGenMulti"
+                : view === "info" ? "How to Use AkariuMulti"
                 : view === "flow-accounts" ? "Google Flow Accounts"
                 : view === "dola-accounts" ? "Dola Accounts"
                 : view === "migoo-accounts" ? "Migoo.ai Accounts"
@@ -503,13 +503,13 @@ const visible = useMemo(() => {
             </h1>
             <p>
               {view === "settings"
-                ? "Keep VGenMulti personal, private, and ready to use."
+                ? "Keep AkariuMulti personal, private, and ready to use."
                 : view === "favorites"
                 ? "Your favorite Google Flow accounts in one place."
                 : view === "license"
-                ? "Choose the VGenMulti license that fits your needs."
+                ? "Choose the AkariuMulti license that fits your needs."
                 : view === "updates"
-                ? "Keep VGenMulti up to date with the latest version."
+                ? "Keep AkariuMulti up to date with the latest version."
                 : view === "info"
                 ? "A quick guide to managing your Google Flow accounts."
                 : "Manage your Google Flow accounts in one place."}
@@ -592,7 +592,7 @@ const visible = useMemo(() => {
             <div className="dialog">
               <h2>Delete {dialog.name}?</h2>
               <p>
-                This removes the account card from VGenMulti. Your Google
+                This removes the account card from AkariuMulti. Your Google
                 account is not affected.
               </p>
               <div className="dialog-actions">
@@ -709,8 +709,8 @@ const visible = useMemo(() => {
 function Brand() {
   return (
     <div className="brand">
-      <img className="brand-image" src="/foursquare.png" alt="VGenMulti logo" />
-      <span>VGENMULTI</span>
+      <img className="brand-image" src="/foursquare.png" alt="AkariuMulti logo" />
+      <span>AKARIUMULTI</span>
     </div>
   )
 }
@@ -837,7 +837,7 @@ function Sidebar({
           }}
         >
           {profile.avatar ? (
-            <img src={profile.avatar} alt="VGenMulti profile" />
+            <img src={profile.avatar} alt="AkariuMulti profile" />
           ) : (
             "VG" 
           )}
@@ -891,7 +891,7 @@ function LicensePage({
         <section className="info-card" style={{ marginBottom: "20px" }}>
           <div className="eyebrow">ACTIVATION</div>
           <h2>Enter your license</h2>
-          <p>Activate VGenMulti to unlock all workspaces and features.</p>
+          <p>Activate AkariuMulti to unlock all workspaces and features.</p>
           <input
             autoFocus
             value={licenseKey}
@@ -902,7 +902,7 @@ function LicensePage({
             style={{ width: "100%", height: "46px", borderRadius: "10px", background: "#131619", color: "#e8e9e9", border: "1px solid #363a3d", padding: "0 14px", marginTop: "10px", marginBottom: "10px" }}
           />
           <button className="primary wide" onClick={onActivate} disabled={licenseChecking}>
-            {licenseChecking ? "Activating…" : "Activate VGenMulti →"}
+            {licenseChecking ? "Activating…" : "Activate AkariuMulti →"}
           </button>
           {licenseError && <p className="dialog-error" style={{marginTop: "10px"}}>{licenseError}</p>}
         </section>
@@ -1062,11 +1062,11 @@ function InfoPage() {
         ["One-Click Switching", "Jump from one account to another instantly without the tedious process of logging in and out."],
         ["Beat Generation Limits", "Hit your daily usage limit on one account? Just click on your backup account and continue your work."]
       ],
-      whyTitle: "Why choose VGenMulti over a browser?",
+      whyTitle: "Why choose AkariuMulti over a browser?",
       whySubtitle: "Maximize your productivity and efficiency.",
       whyBadge: "WORK SMART",
       reasons: [
-        ["🚫 Zero Tab Clutter", "Stop getting lost in dozens of open tabs. VGenMulti keeps your workspace clean in one dedicated app."],
+        ["🚫 Zero Tab Clutter", "Stop getting lost in dozens of open tabs. AkariuMulti keeps your workspace clean in one dedicated app."],
         ["⚡ Instant Transitions", "Time is money. Switching between accounts takes literally one click, saving you time."],
         ["🤖 All-in-One Hub", "Run Flow, Dola, Migoo, or ANY custom web apps side-by-side smoothly in a single interface."],
         ["🛡️ Focused Resource", "Designed specifically to handle multiple AI accounts efficiently without eating up your RAM."]
@@ -1074,16 +1074,16 @@ function InfoPage() {
     },
     id: {
       steps: [
-        ["Pusat Akun Terpadu", "Kumpulkan semua akun Google Flow, Dola, Migoo, dan website AI CUSTOM apa pun di satu tempat."],
+        ["Pusat Akun Terpadu", "Kumpulkan semua akun Google Flow, Dola, Migoo, dan website AI CUSTOM apa pun yang anda punya untuk banyak akun (Penyedia kredit Harian) di satu tempat."],
         ["Bebas Tambah Website", "Tidak terbatas pada web bawaan. Anda bisa menambahkan web AI favorit Anda sendiri melalui menu '+ Add Custom Web' di Sidebar."],
         ["Pindah Akun 1 Klik", "Pindah antar akun secara instan. Bekerja lebih efisien tanpa repot login dan logout berulang kali."],
         ["Atasi Limit Harian", "Limit harian di satu akun habis? Cukup ganti ke akun cadanganmu dan lanjutkan pekerjaan tanpa hambatan."]
       ],
-      whyTitle: "Mengapa memilih VGenMulti dibanding browser?",
+      whyTitle: "Mengapa memilih AkariuMulti dibanding browser?",
       whySubtitle: "Maksimalkan produktivitas dan efisiensi Anda.",
       whyBadge: "KERJA CERDAS",
       reasons: [
-        ["🚫 Bebas Tab Menumpuk", "Berhenti pusing dengan puluhan tab. VGenMulti menjaga ruang kerjamu tetap bersih di satu aplikasi khusus."],
+        ["🚫 Bebas Tab Menumpuk", "Berhenti pusing dengan puluhan tab. AkariuMulti menjaga ruang kerjamu tetap bersih di satu aplikasi khusus."],
         ["⚡ Transisi Instan", "Waktu adalah uang. Pindah antar akun hanya butuh satu klik, jauh lebih cepat daripada browser biasa."],
         ["🤖 Hub AI All-in-One", "Buka Flow, Dola, Migoo, atau Web Custom Anda sendiri secara beriringan dengan lancar di satu antarmuka."],
         ["🛡️ Hemat Resource RAM", "Dirancang khusus untuk mengelola banyak akun AI secara efisien tanpa membuat komputer lemot."]
@@ -1265,7 +1265,7 @@ function Settings({
       <section>
         <label className="setting-icon profile-avatar-input">
           {profile.avatar ? (
-            <img src={profile.avatar} alt="VGenMulti profile" />
+            <img src={profile.avatar} alt="AkariuMulti profile" />
           ) : (
             "YK"
           )}
@@ -1298,7 +1298,7 @@ function Settings({
         </label>
         <div>
           <div className="eyebrow">PROFILE</div>
-          <h2>Your VGenMulti profile</h2>
+          <h2>Your AkariuMulti profile</h2>
           <p>Local desktop profile used for your account manager.</p>
         </div>
       </section>
@@ -1307,7 +1307,7 @@ function Settings({
           <div className="eyebrow">PRIVACY & SECURITY</div>
           <h2>Your data stays local</h2>
           <p>
-            VGenMulti stores account metadata on this device. Google passwords
+            AkariuMulti stores account metadata on this device. Google passwords
             and credentials are never captured.
           </p>
         </div>
@@ -1317,7 +1317,7 @@ function Settings({
         <div>
           <div className="eyebrow">ABOUT</div>
           <h2>
-            VGenMulti <span className="muted">{APP_VERSION}</span>
+            AkariuMulti <span className="muted">{APP_VERSION}</span>
           </h2>
           <p>Google Flow desktop workspace and multi-account manager.</p>
         </div>
@@ -1360,7 +1360,7 @@ function FlowShell({
     })
       .then(() => {
         if (!cancelled) setStatus("Google Flow ready")
-        containerRef.current?.dispatchEvent(new Event("vgenmulti-webview-ready"))
+        containerRef.current?.dispatchEvent(new Event("akariumulti-webview-ready"))
       })
       .catch((error) => {
         console.error("Google Flow WebView failed", error)
@@ -1379,13 +1379,13 @@ function FlowShell({
       void invoke("resize_google_flow", { accountId: account.id, x: rect.left, y: rect.top, width: rect.width, height: rect.height })
     }
     const onReady = () => syncBounds()
-    container.addEventListener("vgenmulti-webview-ready", onReady)
+    container.addEventListener("akariumulti-webview-ready", onReady)
     const observer = new ResizeObserver(syncBounds)
     observer.observe(container)
     syncBounds()
     return () => {
       observer.disconnect()
-      container.removeEventListener("vgenmulti-webview-ready", onReady)
+      container.removeEventListener("akariumulti-webview-ready", onReady)
     }
   }, [navigatorOpen, fullView])
   useEffect(() => {
