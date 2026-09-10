@@ -36,7 +36,7 @@ const plans = [
     price: "Gratis", // Ubah jadi Rp0 atau Gratis
     description: "Try AkariuMulti for 5 days completely free",
     buttonText: "Get Trial License",
-    url: "https://lynk.id/toko_anda/trial" // Ganti dengan link khusus produk trial
+    url: "http://lynk.id/akariu/x0o7833nq5lx" // Ganti dengan link khusus produk trial
   },
   {
     name: "1 Year",
@@ -44,7 +44,7 @@ const plans = [
     price: "Rp35.000",
     description: "AkariuMulti access for 1 year",
     buttonText: "Buy License",
-    url: "https://lynk.id/toko_anda/1-year" // Ganti dengan link produk 1 tahun
+    url: "http://lynk.id/akariu/vdoe4l50mdno" // Ganti dengan link produk 1 tahun
   },
   {
     name: "Lifetime",
@@ -52,7 +52,7 @@ const plans = [
     price: "Rp50.000",
     description: "AkariuMulti access with no expiration",
     buttonText: "Buy License",
-    url: "https://lynk.id/toko_anda/lifetime" // Ganti dengan link produk lifetime
+    url: "http://lynk.id/akariu/3x41jz8xxmom" // Ganti dengan link produk lifetime
   },
 ]
 const starter: Account[] = [
