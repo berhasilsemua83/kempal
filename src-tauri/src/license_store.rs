@@ -41,7 +41,7 @@ fn write<R: Runtime>(a: &AppHandle<R>, s: &LicenseState) -> Result<(), String> {
 }
 
 fn entry() -> Result<Entry, String> {
-    Entry::new("VGenMulti", "license-key").map_err(|e| e.to_string())
+    Entry::new("AkariuMulti", "license-key").map_err(|e| e.to_string())
 }
 
 // Mengambil Hardware ID Permanen (Anti-Reinstall / Anti Curang)
