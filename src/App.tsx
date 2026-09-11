@@ -60,6 +60,56 @@ const starter: Account[] = [
 ]
 
 export default function App() {
+  // --- KONFIGURASI DINAMIS DARI INTERNET ---
+  const [appConfig, setAppConfig] = useState({
+    websiteUrl: "https://akariu.my.id",
+    plans: [
+      {
+        name: "5 Days Trial",
+        originalPrice: "Rp20.000",
+        price: "Gratis",
+        description: "Try AkariuMulti for 5 days completely free",
+        buttonText: "Get Trial License",
+        url: "http://lynk.id/akariu/x0o7833nq5lx"
+      },
+      {
+        name: "1 Year",
+        originalPrice: "Rp150.000",
+        price: "Rp35.000",
+        description: "AkariuMulti access for 1 year",
+        buttonText: "Buy License",
+        url: "http://lynk.id/akariu/vdoe4l50mdno"
+      },
+      {
+        name: "Lifetime",
+        originalPrice: "Rp399.000",
+        price: "Rp50.000",
+        description: "AkariuMulti access with no expiration",
+        buttonText: "Buy License",
+        url: "http://lynk.id/akariu/3x41jz8xxmom"
+      }
+    ]
+  })
+
+// Efek untuk mendownload harga terbaru setiap aplikasi dibuka
+  useEffect(() => {
+    // 1. Masukkan URL asli config.json Anda
+    const configUrl = "https://zajcmfjcopgocxfkzlzw.supabase.co/storage/v1/object/public/akariumulti%20v1.6/config.json";
+    
+    // 2. Tambahkan angka waktu acak di belakang URL agar sistem mengira ini file baru (Mencegah Cache)
+    const urlAntiCache = `${configUrl}?t=${new Date().getTime()}`;
+
+    // 3. Tarik datanya dengan perintah dilarang nyimpan cache (no-store)
+    fetch(urlAntiCache, { cache: "no-store" })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.plans) {
+          setAppConfig(data);
+        }
+      })
+      .catch(err => console.log("Gagal memuat harga terbaru, menggunakan harga offline.", err));
+  }, []);
+  // ------------------------------------------
   const [licensed, setLicensed] = useState(false)
   const [licenseChecking, setLicenseChecking] = useState(true)
   const [licenseError, setLicenseError] = useState("")
