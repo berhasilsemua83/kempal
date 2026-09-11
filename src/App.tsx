@@ -768,8 +768,10 @@ function Sidebar({
   onAddService,
   onDeleteService,
   licensed, // <--- TAMBAHKAN INI
+  websiteUrl, 
 }: {
   licensed: boolean
+  websiteUrl: string 
   view: string
   setView: (v: any) => void
   profile: { name: string; avatar: string | null }
