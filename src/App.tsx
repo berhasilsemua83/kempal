@@ -916,6 +916,7 @@ function LicensePage({
   setLicenseKey,
   onActivate,
   licenseChecking,
+  plans, 
   licenseError
 }: { 
   licenseState: LicenseState | null; 
@@ -926,6 +927,7 @@ function LicensePage({
   onActivate: () => void;
   licenseChecking: boolean;
   licenseError: string;
+  plans: any[]; 
 }) {
   return (
     <div className="feature-page">
