@@ -29,32 +29,6 @@ const licensePlanLabel = (plan: string) => ({ five_minutes: "5 Minutes", one_day
 const licenseStatusLabel = (status: string) => status ? status.replace(/_/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase()) : "Unavailable"
 const licenseExpiryLabel = (state: LicenseState | null) => state?.lifetime ? "Lifetime" : state?.expires_at ? new Date(state.expires_at).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "—"
 
-const plans = [
-  {
-    name: "5 Days Trial",
-    originalPrice: "Rp20.000",
-    price: "Gratis", // Ubah jadi Rp0 atau Gratis
-    description: "Try AkariuMulti for 5 days completely free",
-    buttonText: "Get Trial License",
-    url: "http://lynk.id/akariu/x0o7833nq5lx" // Ganti dengan link khusus produk trial
-  },
-  {
-    name: "1 Year",
-    originalPrice: "Rp125.000",
-    price: "Rp35.000",
-    description: "AkariuMulti access for 1 year",
-    buttonText: "Buy License",
-    url: "http://lynk.id/akariu/vdoe4l50mdno" // Ganti dengan link produk 1 tahun
-  },
-  {
-    name: "Lifetime",
-    originalPrice: "Rp280.000",
-    price: "Rp50.000",
-    description: "AkariuMulti access with no expiration",
-    buttonText: "Buy License",
-    url: "http://lynk.id/akariu/3x41jz8xxmom" // Ganti dengan link produk lifetime
-  },
-]
 const starter: Account[] = [
   {
     id: "main",
