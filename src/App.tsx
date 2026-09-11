@@ -597,6 +597,7 @@ const visible = useMemo(() => {
             onActivate={activateLicense}
             licenseChecking={licenseChecking}
             licenseError={licenseError}
+            plans={appConfig.plans}
           />
         ) : view === "updates" ? (
           <UpdatesPage />
