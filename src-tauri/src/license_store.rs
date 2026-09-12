@@ -112,7 +112,7 @@ pub async fn activate_license<R: Runtime>(
         return Err("Lisensi kosong".into());
     };
 
-    let json = call_validate(&a, key).await?;
+    let json = call_validate(&a, &key).await?;
     let valid = json["valid"].as_bool().unwrap_or(false);
     
     if !valid {
