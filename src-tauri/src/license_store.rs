@@ -107,7 +107,7 @@ pub async fn activate_license<R: Runtime>(
     a: AppHandle<R>,
     license_key: String,
 ) -> Result<LicenseState, String> {
-    let key = license_key.trim();
+    let key = license_key.trim().to_uppercase();
     if key.is_empty() {
         return Err("Lisensi kosong".into());
     };
