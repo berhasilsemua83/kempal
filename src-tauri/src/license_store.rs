@@ -133,7 +133,7 @@ pub async fn activate_license<R: Runtime>(
         device_id: device(&a)?,
     };
 
-    entry()?.set_password(key).map_err(|e| e.to_string())?;
+    entry()?.set_password(&key).map_err(|e| e.to_string())?;
     write(&a, &state)?;
     
     Ok(state)
