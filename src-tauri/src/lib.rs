@@ -114,8 +114,8 @@ fn expand_main_window(app: tauri::AppHandle) -> Result<(), String> {
     window.set_resizable(true).map_err(|e| e.to_string())?;
     window
         .set_size(tauri::Size::Physical(tauri::PhysicalSize {
-            width: 1280,
-            height: 800,
+            width: 900,
+            height: 650,
         }))
         .map_err(|e| e.to_string())?;
     window
