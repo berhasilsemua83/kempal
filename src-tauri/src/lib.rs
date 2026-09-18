@@ -67,7 +67,17 @@ async fn close_google_flow(
     })
     .await
 }
-
+#[tauri::command]
+async fn reload_google_flow(
+    app: tauri::AppHandle,
+    account_id: String,
+) -> Result<(), String> {
+    let operation_app = app.clone();
+    run_on_ui_thread(&app, move || {
+        webview_manager::reload(&operation_app, account_id)
+    })
+    .await
+}
 #[tauri::command]
 async fn resize_google_flow(
     app: tauri::AppHandle,
