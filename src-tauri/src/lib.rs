@@ -150,6 +150,7 @@ pub fn run() {
             open_google_flow,
             close_google_flow,
             resize_google_flow,
+            reload_google_flow, 
             remove_google_flow_account,
             license_store::get_device_id,
             license_store::get_license_state,
