@@ -301,20 +301,40 @@ const createAccount = () => {
     setProfile(next)
     localStorage.setItem("akariumulti-profile", JSON.stringify(next))
   }
+// ========================================================
+  // 1. EFEK UNTUK MEMUAT AKUN (Diperkuat Anti-Error)
+  // ========================================================
   useEffect(() => {
     if (!licensed || accountsLoaded) return
-    void loadAccounts().then((saved) => setAccounts(saved as Account[])).finally(() => setAccountsLoaded(true))
+    void loadAccounts().then((saved) => {
+      // Pastikan data yang masuk adalah Array (Daftar), bukan null
+      if (saved && Array.isArray(saved)) {
+        setAccounts(saved as Account[]);
+      } else {
+        setAccounts([]);
+      }
+    }).finally(() => setAccountsLoaded(true))
   }, [licensed, accountsLoaded])
+
   useEffect(() => {
     if (licensed && accountsLoaded) void saveAccounts(accounts)
   }, [accounts, licensed, accountsLoaded])
-  // Efek untuk memuat Custom Services pertama kali aplikasi dibuka
+
+  // ========================================================
+  // 2. EFEK UNTUK MEMUAT CUSTOM WEB (Diperkuat Anti-Error)
+  // ========================================================
   useEffect(() => {
     if (!licensed || servicesLoaded) return
-    void loadServices().then((saved) => setCustomServices(saved)).finally(() => setServicesLoaded(true))
+    void loadServices().then((saved) => {
+      // Pastikan data yang masuk adalah Array (Daftar), bukan null
+      if (saved && Array.isArray(saved)) {
+        setCustomServices(saved);
+      } else {
+        setCustomServices([]);
+      }
+    }).finally(() => setServicesLoaded(true))
   }, [licensed, servicesLoaded])
 
-  // Efek untuk otomatis menyimpan jika ada perubahan di customServices
   useEffect(() => {
     if (licensed && servicesLoaded) void saveServices(customServices)
   }, [customServices, licensed, servicesLoaded])
