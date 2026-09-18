@@ -1,3 +1,5 @@
+import { invoke } from "@tauri-apps/api/core"
+
 export type StoredAccount = {
   id: string
   name: string
@@ -8,7 +10,9 @@ export type StoredAccount = {
   order: number
   url?: string
 }
+
 const STORAGE_KEY = "akariumulti-accounts"
+
 function isAccount(value: unknown): value is StoredAccount {
   if (!value || typeof value !== "object") return false
   const a = value as Partial<StoredAccount>
@@ -22,11 +26,15 @@ function isAccount(value: unknown): value is StoredAccount {
     typeof a.order === "number"
   )
 }
+
 export async function loadAccounts(): Promise<StoredAccount[]> {
   try {
     const native = await invoke<unknown>("load_accounts")
     if (native !== null && native !== undefined) {
-      if (!Array.isArray(native) || !native.every(isAccount)) throw new Error("Invalid stored account data")
+      if (!Array.isArray(native) || !native.every(isAccount)) {
+        console.warn("Format data tidak sesuai, mengembalikan daftar kosong untuk mencegah crash.");
+        return [];
+      }
       localStorage.removeItem(STORAGE_KEY)
       return [...native].sort((a, b) => a.order - b.order)
     }
@@ -34,7 +42,7 @@ export async function loadAccounts(): Promise<StoredAccount[]> {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw !== null) {
       const parsed: unknown = JSON.parse(raw)
-      if (!Array.isArray(parsed) || !parsed.every(isAccount)) throw new Error("Invalid stored account data")
+      if (!Array.isArray(parsed) || !parsed.every(isAccount)) return [];
       await invoke("save_accounts", { accounts: parsed })
       localStorage.removeItem(STORAGE_KEY)
       return [...parsed].sort((a, b) => a.order - b.order)
@@ -45,6 +53,7 @@ export async function loadAccounts(): Promise<StoredAccount[]> {
     return []
   }
 }
+
 export async function saveAccounts(accounts: StoredAccount[]) {
   try {
     if (!accounts.every(isAccount)) throw new Error("Invalid account data")
@@ -54,4 +63,3 @@ export async function saveAccounts(accounts: StoredAccount[]) {
     console.error("AkariuMulti account data could not be saved", error)
   }
 }
-import { invoke } from "@tauri-apps/api/core"
