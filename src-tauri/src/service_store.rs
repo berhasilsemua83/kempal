@@ -13,9 +13,13 @@ pub fn load_services<R: Runtime>(app: AppHandle<R>) -> Result<Option<serde_json:
     if !file.exists() {
         return Ok(None);
     }
-    serde_json::from_str(&fs::read_to_string(file).map_err(|e| e.to_string())?)
-        .map(Some)
-        .map_err(|e| e.to_string())
+    match fs::read_to_string(&file) {
+        Ok(content) => match serde_json::from_str(&content) {
+            Ok(json) => Ok(Some(json)),
+            Err(_) => Ok(None),
+        },
+        Err(_) => Ok(None),
+    }
 }
 
 #[tauri::command]
@@ -27,9 +31,16 @@ pub fn save_services<R: Runtime>(
     if let Some(parent) = file.parent() {
         fs::create_dir_all(parent).map_err(|e| e.to_string())?;
     }
+    
+    // ATOMIC WRITE untuk Custom Services
+    let tmp_file = file.with_extension("tmp");
     fs::write(
-        file,
+        &tmp_file,
         serde_json::to_vec(&services).map_err(|e| e.to_string())?,
     )
-    .map_err(|e| e.to_string())
+    .map_err(|e| e.to_string())?;
+    
+    fs::rename(tmp_file, file).map_err(|e| e.to_string())?;
+    
+    Ok(())
 }
