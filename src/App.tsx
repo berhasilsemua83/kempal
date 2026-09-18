@@ -1445,6 +1445,21 @@ function FlowShell({
         <button className="back" onClick={onBack}>‹ Accounts</button>
         <span>{status}</span>
         <div className="flow-controls">
+
+           {/* --- TOMBOL REFRESH BARU --- */}
+          <button 
+            onClick={() => {
+              setStatus("Refreshing...");
+              invoke("reload_google_flow", { accountId: account.id })
+                .then(() => setTimeout(() => setStatus("Ready"), 1500))
+                .catch(console.error);
+            }}
+            style={{ background: "transparent", border: "1px solid #363a3d", color: "#e8e9e9", borderRadius: "6px", padding: "0 12px", marginRight: "10px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}
+            title="Refresh Halaman"
+          >
+            <span style={{ fontSize: "16px" }}>⟳</span> Refresh
+          </button>
+          {/* ----------------------------- */}
           <div className="mini-navigator">
             <button className="navigator-trigger" onClick={onToggleNavigator} aria-expanded={navigatorOpen}>
               <img src={account.avatarUrl || "/google-flow.png"} alt="" />
