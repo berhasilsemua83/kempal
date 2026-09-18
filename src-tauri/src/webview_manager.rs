@@ -291,3 +291,11 @@ pub fn remove<R: Runtime>(app: &AppHandle<R>, account_id: String) -> Result<bool
         }
     }
 }
+// FUNGSI UNTUK MEREFRESH HALAMAN
+pub fn reload<R: Runtime>(app: &AppHandle<R>, account_id: String) -> Result<(), String> {
+    if let Some(webview) = app.get_webview(&webview_label(&account_id)) {
+        // Menyuntikkan perintah Javascript untuk me-refresh halaman
+        webview.eval("window.location.reload();").map_err(|e| e.to_string())?;
+    }
+    Ok(())
+}
